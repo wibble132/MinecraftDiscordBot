@@ -4,23 +4,24 @@ import time
 
 import IOThreads
 
-# MINECRAFT_FOLDER_DIR = "G:\\.shortcut-targets-by-id\\1P2qH6U4zNTGlNOGdH0QnNlhPHiYHb5Xu\\Minecraft multiplayer"
-MINECRAFT_FOLDER_DIR = "C:\\Users\\Dan\\Documents\\Programming\\Python\\SubprocessIOStreamTest\\Server Copy\\2"
-MINECRAFT_SERVER_NAME = "minecraft_server.1.18.2.jar"
-MINECRAFT_START_MEMORY = 1024
-MINECRAFT_MAX_MEMORY = 2048
+# Use a full path
+MINECRAFT_FOLDER_DIR = "C:\\Users\\Dan\\Documents\\Programming\\Python\\DiscordBot\\Minecraft Server Files"
+# MINECRAFT_FOLDER_DIR = "C:\\Users\\Dan\\Documents\\Programming\\Python\\SubprocessIOStreamTest\\Server Copy\\2"
+MINECRAFT_SERVER_NAME = "minecraft_server.1.19.2.jar"
+MINECRAFT_START_MEMORY_MB = 1024
+MINECRAFT_MAX_MEMORY_MB = 4096
 
 RUN_COMMAND = [
     "java",
-    f"-Xmx{MINECRAFT_MAX_MEMORY}M",
-    f"-Xms{MINECRAFT_START_MEMORY}M",
+    f"-Xmx{MINECRAFT_MAX_MEMORY_MB}M",
+    f"-Xms{MINECRAFT_START_MEMORY_MB}M",
     "-jar", MINECRAFT_SERVER_NAME,
     "--nogui",
 ]
-# os.chdir(MINECRAFT_FOLDER_DIR)
+os.chdir(MINECRAFT_FOLDER_DIR)
 
 # noinspection PyRedeclaration
-RUN_COMMAND = "python C:\\Users\\Dan\\Documents\\Programming\\Python\\DiscordBot\\basicRepeater.py"
+# RUN_COMMAND = "python C:\\Users\\Dan\\Documents\\Programming\\Python\\DiscordBot\\basicRepeater.py"
 
 
 class MinecraftServerController:

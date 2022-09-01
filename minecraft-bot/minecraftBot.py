@@ -30,9 +30,8 @@ class MinecraftBotClient(discord.Client):
         await self.tree.sync(guild=MY_GUILD)
 
     async def loop_thread(self):
-        print("hello")
+        print("Starting main io loop")
         while self.is_io_looping:
-            print("hi")
             self.is_io_loop_dead = False
             await asyncio.sleep(2)
             if self.channel is not None:
@@ -49,6 +48,12 @@ class MinecraftBotClient(discord.Client):
                         await self.channel.send(content=message_to_send)
                     else:
                         print("This shouldn't happen")
+
+                if (code := self.minecraft.minecraft_process.poll()) is not None:
+                    await self.channel.send(
+                        f"The process has ended unexpectedly with code {code}. "
+                        "Please run /stop to properly close the rest of stuff")
+
         print("Stopped main io loop")
         self.is_io_loop_dead = True
 
@@ -151,6 +156,6 @@ async def on_message(message: discord.Message):
             client.minecraft.inputThread.queue.put(message.content)
 
 
-print("h")
+print("starting run client")
 client.run(constants.TOKEN)
-print("3")
+print("finished")
