@@ -26,27 +26,35 @@ class IOThread:
         self.active = False
 
     def threadFunction(self):
-        print(f"Starting IO thread {self.process}")
+        print(f"Starting IO thread {self.__hash__()}, {self.io_function.__name__}")
         while self.active and self.process is not None:
-            self.io_function(self.process, self.queue)
+            if not self.io_function(self.process, self.queue):
+                break
             time.sleep(0.1)
         self.active = False
-        print("IO Thread stopped")
+        print(f"stopped IO Thread {self.__hash__()}, {self.io_function.__name__}")
 
 
 def inputThreadFunction(process: subprocess.Popen, que: queue.Queue):
     if not que.empty():
         process.stdin.write((que.get() + "\r\n").encode())
         process.stdin.flush()
+    return True
 
 
 def outputThreadFunction(process: subprocess.Popen, que: queue.Queue[str]):
     line = process.stdout.readline()
+    if line == b'':
+        return False
     print(f"Output thread: {line}")
     que.put(str(line))
+    return True
 
 
 def errorThreadFunction(process: subprocess.Popen, que: queue.Queue[str]):
     line = process.stderr.readline()
+    if line == b'':
+        return False
     print(f"Error thread: {line}")
     que.put(str(line))
+    return True
