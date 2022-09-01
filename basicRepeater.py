@@ -14,3 +14,5 @@ while True:
         raise IOError
     if text == "stop":
         break
+
+print("Stopping! :0")
