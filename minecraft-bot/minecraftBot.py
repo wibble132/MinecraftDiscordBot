@@ -8,6 +8,7 @@ try:
     import constants
 except ModuleNotFoundError:
     from shutil import copy2
+
     baseFilepath = '\\'.join(__file__.split('\\')[:-2])
     print(baseFilepath)
     copy2(f"{baseFilepath}\\constants-template.py", f"{baseFilepath}\\constants.py")
@@ -25,7 +26,7 @@ class MinecraftBotClient(discord.Client):
         super(MinecraftBotClient, self).__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
 
-        self.is_running = False
+        self.is_running: bool = False
         self.is_shutdown: bool = False
         self.is_io_looping: bool = False
         self.is_io_loop_dead: bool = True
@@ -57,9 +58,10 @@ class MinecraftBotClient(discord.Client):
                         print("This shouldn't happen")
 
                 if (code := self.minecraft.minecraft_process.poll()) is not None:
-                    await self.channel.send(
-                        f"The process has ended unexpectedly with code {code}. "
-                        "Please run /stop to properly close the rest of stuff")
+                    if client.is_running:
+                        await self.channel.send(
+                            f"The process has ended unexpectedly with code {code}. "
+                            "Please run /stop to properly close the rest of stuff")
 
         print("Stopped main io loop")
         self.is_io_loop_dead = True
@@ -138,6 +140,26 @@ async def shutdown(interaction: discord.Interaction):
     await interaction.response.send_message("Shutting down")
 
 
+@client.tree.command()
+async def say(interaction: discord.Interaction, message: str):
+    if not client.is_running:
+        await interaction.response.send_message("The server is not running...", ephemeral=True)
+        return
+    client.minecraft.inputThread.queue.put(f'tellraw @a {{"text":"[Discord-{interaction.user}] {message}"}}')
+    await interaction.response.send_message(f"[Discord-{interaction.user}] {message}")
+
+
+@client.tree.command()
+async def cmd(interaction: discord.Interaction, command: str):
+    if not client.is_running:
+        await interaction.response.send_message("The server is not running...", ephemeral=True)
+        return
+
+    await interaction.response.send_message(f"[Discord - {interaction.user}] {command}")
+    client.minecraft.inputThread.queue.put(f"[Discord - {interaction.user}] {command}")
+    client.minecraft.inputThread.queue.put(command)
+
+
 @client.event
 async def on_message(message: discord.Message):
     # For some reason editing the interaction's message doesn't work
@@ -157,10 +179,10 @@ async def on_message(message: discord.Message):
         await message.edit(content="Shut down")
         await client.close()
 
-    elif client.is_running and message.author.id != client.user.id:
-        if client.channel is not None and message.channel.id == client.channel.id:
-            print(f"Received {message.content}")
-            client.minecraft.inputThread.queue.put(message.content)
+    # elif client.is_running and message.author.id != client.user.id:
+    #     if client.channel is not None and message.channel.id == client.channel.id:
+    #         print(f"Received {message.content}")
+    #         client.minecraft.inputThread.queue.put(message.content)
 
 
 print("starting run client")
