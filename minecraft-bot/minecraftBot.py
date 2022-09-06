@@ -3,16 +3,7 @@ from typing import Union, Optional
 
 import discord
 from discord import app_commands
-
-try:
-    import constants
-except ModuleNotFoundError:
-    from shutil import copy2
-
-    baseFilepath = '\\'.join(__file__.split('\\')[:-2])
-    print(baseFilepath)
-    copy2(f"{baseFilepath}\\constants-template.py", f"{baseFilepath}\\constants.py")
-    import constants
+import constants
 from minecraftServerController import MinecraftServerController
 
 MY_GUILD = discord.Object(id=constants.GUILD_ID)

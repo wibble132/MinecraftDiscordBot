@@ -1,4 +1,5 @@
 .idea
 examples/
 Minecraft Server Files/
-constants.py
+minecraft-bot/config.json
+__pycache__
