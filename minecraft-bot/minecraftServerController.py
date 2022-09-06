@@ -3,25 +3,16 @@ import subprocess
 import time
 
 import IOThreads
-
-# Use a full path
-MINECRAFT_FOLDER_DIR = "C:\\Users\\Dan\\Documents\\Programming\\Python\\DiscordBot\\Minecraft Server Files"
-# MINECRAFT_FOLDER_DIR = "C:\\Users\\Dan\\Documents\\Programming\\Python\\SubprocessIOStreamTest\\Server Copy\\2"
-MINECRAFT_SERVER_NAME = "minecraft_server.1.19.2.jar"
-MINECRAFT_START_MEMORY_MB = 1024
-MINECRAFT_MAX_MEMORY_MB = 4096
+import constants
 
 RUN_COMMAND = [
     "java",
-    f"-Xmx{MINECRAFT_MAX_MEMORY_MB}M",
-    f"-Xms{MINECRAFT_START_MEMORY_MB}M",
-    "-jar", MINECRAFT_SERVER_NAME,
+    f"-Xmx{constants.MINECRAFT_MAX_MEMORY_MB}M",
+    f"-Xms{constants.MINECRAFT_START_MEMORY_MB}M",
+    "-jar", constants.MINECRAFT_SERVER_NAME,
     "--nogui",
 ]
-os.chdir(MINECRAFT_FOLDER_DIR)
-
-# noinspection PyRedeclaration
-# RUN_COMMAND = "python C:\\Users\\Dan\\Documents\\Programming\\Python\\DiscordBot\\basicRepeater.py"
+os.chdir(constants.MINECRAFT_FOLDER_DIR)
 
 
 class MinecraftServerController:
@@ -65,4 +56,3 @@ class MinecraftServerController:
         self.errorThread.stopThread()
 
         return self.minecraft_process.poll()
-
