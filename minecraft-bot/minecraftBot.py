@@ -151,6 +151,12 @@ async def cmd(interaction: discord.Interaction, command: str):
     client.minecraft.inputThread.queue.put(command)
 
 
+@client.tree.command()
+async def github(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "My code is available on Github at https://github.com/wibble132/MinecraftDiscordBot")
+
+
 @client.event
 async def on_message(message: discord.Message):
     # For some reason editing the interaction's message doesn't work
