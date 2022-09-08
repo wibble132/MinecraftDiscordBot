@@ -4,14 +4,14 @@ from os.path import exists
 configFile = "config.json"
 
 if not exists(configFile):
-    with open(configFile) as file:
+    with open(configFile, 'w') as file:
         file.write((
             '{\n'
             '  "MinecraftSettings": {\n'
             '    "FolderLocation": "",\n'
             '    "Filename": "",\n'
             '    "StartMemoryMB": 1024,\n'
-            '    "MaxMemoryMB": 2048,\n'
+            '    "MaxMemoryMB": 2048\n'
             '  },\n'
             '  "BotSettings": {\n'
             '    "Token": "TOKEN",'
