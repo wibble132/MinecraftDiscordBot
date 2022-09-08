@@ -14,18 +14,15 @@ if not exists(configFile):
             '    "MaxMemoryMB": 2048\n'
             '  },\n'
             '  "BotSettings": {\n'
-            '    "Token": "TOKEN",'
-            '    "GuildID": 0'
-            '  }'
-            '}'
+            '    "Token": "TOKEN",\n'
+            '    "GuildID": 0\n'
+            '  }\n'
+            '}\n'
         ))
     raise Exception("config.json does not exist. A template has been created, fill it out")
 
-
 with open(configFile) as file:
     _rawdata = json.load(file)
-
-print(_rawdata)
 
 MINECRAFT_SETTINGS = _rawdata['MinecraftSettings']
 MINECRAFT_FOLDER_DIR = MINECRAFT_SETTINGS['FolderLocation']
@@ -42,5 +39,3 @@ GUILD_ID = BOT_SETTINGS['GuildID']
 
 if TOKEN == "TOKEN" or GUILD_ID == 0:
     raise ValueError("Token or guild id have not been set in config.json")
-
-print(GUILD_ID)
