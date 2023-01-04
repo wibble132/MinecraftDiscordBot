@@ -1,5 +1,7 @@
 .idea
 examples/
 Minecraft Server Files/
-minecraft-bot/config.json
+minecraft-bot/config*.json
 __pycache__
+build/
+minecraftBot.spec

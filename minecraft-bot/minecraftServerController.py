@@ -9,6 +9,7 @@ RUN_COMMAND = [
     "java",
     f"-Xmx{constants.MINECRAFT_MAX_MEMORY_MB}M",
     f"-Xms{constants.MINECRAFT_START_MEMORY_MB}M",
+    constants.MINECRAFT_EXTRA_OPTIONS,
     "-jar", constants.MINECRAFT_SERVER_NAME,
     "--nogui",
 ]
