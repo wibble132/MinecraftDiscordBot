@@ -100,6 +100,10 @@ async def is_running(interaction: discord.Interaction):
 
 @client.tree.command()
 async def get_status(interaction: discord.Interaction, whisper_result: bool = True):
+    if client.minecraft.minecraft_process is None:
+        interaction.response.send_message("The server has not yet been started")
+        return
+
     match client.minecraft.minecraft_process.poll():
         case None:
             await interaction.response.send_message("The server process is still running")
@@ -160,6 +164,7 @@ async def github(interaction: discord.Interaction):
 
 if constants.ALLOW_GET_IP:
     from requests import get
+
 
     # TODO: Only allow authorised people to do this, possible security issue??
     @client.tree.command()
