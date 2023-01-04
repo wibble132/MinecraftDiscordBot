@@ -40,20 +40,24 @@ class MinecraftServerController:
         )
 
         self.inputThread.startThread(self.minecraft_process)
-        self.outputThread.startThread(self.minecraft_process)
+        if constants.OUTPUT_LOG:
+            self.outputThread.startThread(self.minecraft_process)
         self.errorThread.startThread(self.minecraft_process)
 
-    def stopServer(self):
+    def stopServer(self) -> int:
         if self.isRunning():
             if not self.inputThread.active:
                 self.inputThread.startThread(self.minecraft_process)
             self.inputThread.queue.put("stop")
 
+        # This can break, e.g. if called before the server has finished starting up
+        # So it may get stuck in a loop and forever complain
         while self.minecraft_process.poll() is None:
             time.sleep(0.5)
 
         self.inputThread.stopThread()
-        self.outputThread.stopThread()
+        if constants.OUTPUT_LOG:
+            self.outputThread.stopThread()
         self.errorThread.stopThread()
 
         return self.minecraft_process.poll()
