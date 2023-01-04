@@ -3,6 +3,7 @@ from typing import Union, Optional
 
 import discord
 from discord import app_commands
+
 import constants
 from minecraftServerController import MinecraftServerController
 
@@ -155,6 +156,16 @@ async def cmd(interaction: discord.Interaction, command: str):
 async def github(interaction: discord.Interaction):
     await interaction.response.send_message(
         "My code is available on Github at https://github.com/wibble132/MinecraftDiscordBot")
+
+
+if constants.ALLOW_GET_IP:
+    from requests import get
+
+    # TODO: Only allow authorised people to do this, possible security issue??
+    @client.tree.command()
+    async def get_ip(interaction: discord.Interaction, private_response: bool = True):
+        ip = get('https://api.ipify.org').content.decode('utf8')
+        await interaction.response.send_message(f"My public IP address is {ip}.", ephemeral=private_response)
 
 
 @client.event

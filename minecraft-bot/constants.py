@@ -16,7 +16,8 @@ if not exists(configFile):
             '  },\n'
             '  "BotSettings": {\n'
             '    "Token": "TOKEN",\n'
-            '    "GuildID": 0\n'
+            '    "GuildID": 0,\n'
+            '    "AllowGetIpAddressCommand: false\n'
             '  }\n'
             '}\n'
         ))
@@ -38,6 +39,7 @@ if MINECRAFT_FOLDER_DIR == "" or MINECRAFT_SERVER_NAME == "":
 BOT_SETTINGS: dict[str, any] = _rawdata.get('BotSettings', {})
 TOKEN: str = BOT_SETTINGS.get('Token', "TOKEN")
 GUILD_ID: int = BOT_SETTINGS.get('GuildID', 0)
+ALLOW_GET_IP: bool = BOT_SETTINGS.get('AllowGetIpAddressCommand', False)
 
 if TOKEN == "TOKEN" or GUILD_ID == 0:
     raise ValueError("Token or guild id have not been set in config.json")
