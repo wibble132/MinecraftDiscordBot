@@ -101,7 +101,7 @@ async def is_running(interaction: discord.Interaction):
 @client.tree.command()
 async def get_status(interaction: discord.Interaction, whisper_result: bool = True):
     if client.minecraft.minecraft_process is None:
-        interaction.response.send_message("The server has not yet been started")
+        await interaction.response.send_message("The server has not yet been started")
         return
 
     match client.minecraft.minecraft_process.poll():
